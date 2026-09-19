@@ -1,3 +1,4 @@
+// features/api/apiSlice.ts
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const apiSlice = createApi({
@@ -12,7 +13,6 @@ export const apiSlice = createApi({
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
       }
-
       return headers;
     },
   }),
@@ -24,6 +24,7 @@ export const apiSlice = createApi({
     "Borrowings",
     "Notifications",
     "Analytics",
+    "Profile", // <-- Added this for our Member Profile
   ],
 
   endpoints: () => ({}),

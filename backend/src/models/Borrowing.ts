@@ -7,6 +7,7 @@ export interface IBorrowing extends Document {
   dueDate: Date;
   returnDate?: Date | null;
   status: "BORROWED" | "RETURNED" | "OVERDUE";
+  renewalsUsed?: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -44,6 +45,11 @@ const borrowingSchema = new Schema<IBorrowing>(
       type: String,
       enum: ["BORROWED", "RETURNED", "OVERDUE"],
       default: "BORROWED",
+    },
+
+    renewalsUsed: {
+      type: Number,
+      default: 0,
     },
   },
   {

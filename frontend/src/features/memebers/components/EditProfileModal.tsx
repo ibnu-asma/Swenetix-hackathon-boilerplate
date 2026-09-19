@@ -1,6 +1,6 @@
 // features/members/components/EditProfileModal.tsx
 import React, { useState, useEffect } from 'react';
-
+import { useUpdateMemberProfileMutation } from '../memberApi';
 import { MemberProfile } from '../../borrowing/types'; // Adjust path if needed
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const EditProfileModal: React.FC<Props> = ({ isOpen, onClose, initialData }) => {
-  const [updateProfile, { isLoading, isError, error }] = useUpdateMemberProfileMutation();
+  const [updateProfile, { isLoading, isError }] = useUpdateMemberProfileMutation();
   
   // Local form state
   const [formData, setFormData] = useState({
@@ -129,7 +129,3 @@ export const EditProfileModal: React.FC<Props> = ({ isOpen, onClose, initialData
     </div>
   );
 };
-
-function useUpdateMemberProfileMutation(): [any, { isLoading: any; isError: any; error: any; }] {
-    throw new Error('Function not implemented.');
-}

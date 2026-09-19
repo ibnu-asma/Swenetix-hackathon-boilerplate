@@ -12,8 +12,28 @@ export const borrowingApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // 1. Get Member Profile
     getMemberProfile: builder.query<MemberProfile, void>({
-      query: () => "/member/profile",
-      providesTags: ["Members"],
+      query: () => "/users/profile",
+      providesTags: ["Members"], // Matches the tag invalidated by updateMemberProfile
+      transformResponse: (response: any) => {
+        // Transform backend user data to MemberProfile format
+        const user = response.data;
+        return {
+          id: user._id,
+          name: `${user.firstName} ${user.lastName}`,
+          memberId: user.memberId || `#LIB-${user._id.slice(-4)}`,
+          email: user.email,
+          tier: user.tier || "Standard Member",
+          faculty: user.faculty || "Not specified",
+          cardStatus: user.cardStatus || "Active",
+          quota: {
+            used: user.currentLoans || 0,
+            total: 3,
+            maxRenewals: 2,
+            checkoutLimitDays: 14,
+          },
+          fines: user.fines || 0,
+        };
+      },
     }),
     
     // 2. Get Current Borrowings
@@ -28,7 +48,7 @@ export const borrowingApi = apiSlice.injectEndpoints({
         url: `/borrowings/${bookId}/renew`,
         method: "POST",
       }),
-      invalidatesTags: ["Borrowings"],
+      invalidatesTags: ["Borrowings", "Books"], // Added Books in case catalog needs updating
     }),
 
     // 4. Borrow (Checkout) a Book
@@ -38,7 +58,7 @@ export const borrowingApi = apiSlice.injectEndpoints({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Borrowings", "Books"],
+      invalidatesTags: ["Borrowings", "Books", "Members"], // Added Members to update quota
     }),
 
     // 5. Get Borrowing History
@@ -58,7 +78,7 @@ export const borrowingApi = apiSlice.injectEndpoints({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Borrowings", "Books"],
+      invalidatesTags: ["Borrowings", "Books", "Members"], // Added Members to update quota
     }),
   }),
 });

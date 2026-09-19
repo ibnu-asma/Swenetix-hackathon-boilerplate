@@ -53,18 +53,19 @@ export const memberApi = apiSlice.injectEndpoints({
         { type: "Members", id: "LIST" },
       ],
     }),
+
+    // 5. UPDATE PROFILE
     updateMemberProfile: builder.mutation<Member, UpdateMemberProfileRequest>({
-  query: (body) => ({
-    url: '/users/profile', // Or `/users/${id}` depending on your backend
-    method: 'PUT',
-    body,
+      query: (body) => ({
+        url: '/users/profile', // Make sure this matches your backend route!
+        method: 'PUT',
+        body,
+      }),
+      // This is crucial! It tells RTK Query to refetch any component 
+      // using the "Members" tag (like the Dashboard) automatically.
+      invalidatesTags: ["Members"], 
+    }),
   }),
-
-}),
-
-  }),
-  
-
 });
 
 export const {
@@ -72,4 +73,5 @@ export const {
   useGetMemberByIdQuery,
   useAddMemberMutation,
   useDeleteMemberMutation,
+  useUpdateMemberProfileMutation, // <-- ADDED THIS EXPORT
 } = memberApi;

@@ -235,7 +235,7 @@ export const Dashboard: React.FC = () => {
             </div>
           </div>
           <div className="bg-gray-900 rounded-lg p-4 font-mono text-xs text-green-400 shadow-inner">
-             <div className="text-gray-500 mb-2">// Simulated Concurrency Race: Item #ISBN-0262 | State: 1 Copy in Stock</div>
+             <div className="text-gray-500 mb-2">{`// Simulated Concurrency Race: Item #ISBN-0262 | State: 1 Copy in Stock`}</div>
              <div className="bg-gray-800 p-3 rounded border border-gray-700 mb-2 flex justify-between items-center">
                 <div>
                   <div className="text-white font-bold">Patron A (Alex Chen) claims Claim</div>

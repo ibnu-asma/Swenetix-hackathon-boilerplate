@@ -3,6 +3,8 @@ export type BorrowStatus = 'active' | 'overdue' | 'due-soon';
 
 export interface BorrowedItem {
   id: string;
+  userId?: string;
+  bookId?: string;
   title: string;
   author: string;
   isbn: string;
@@ -44,6 +46,8 @@ export interface ReturnBookRequest {
 
 // 3. History Item (extends BorrowedItem with returned status)
 export interface BorrowHistoryItem extends Omit<BorrowedItem, 'status'> {
+  userId?: string;
+  bookId?: string;
   status: 'returned' | 'overdue' | 'lost';
   returnedDate: string | null;
 }

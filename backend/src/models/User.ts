@@ -36,6 +36,36 @@ const userSchema = new mongoose.Schema(
       enum: ["member", "librarian"],
       default: "member",
     },
+
+    memberId: {
+      type: String,
+      trim: true,
+    },
+
+    tier: {
+      type: String,
+      default: "Standard Member",
+    },
+
+    faculty: {
+      type: String,
+      trim: true,
+    },
+
+    cardStatus: {
+      type: String,
+      default: "Active",
+    },
+
+    currentLoans: {
+      type: Number,
+      default: 0,
+    },
+
+    fines: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,
