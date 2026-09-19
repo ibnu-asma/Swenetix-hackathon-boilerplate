@@ -7,7 +7,7 @@ import AdminLayout from "../layouts/AdminLayout";
 import AuthLayout from "../layouts/AuthLayout";
 import { StudentLayout } from "../layouts/StudentLayout";
 
-import AdminDashboard from "../pages/admin/Dashboard";
+// import AdminDashboard from "../pages/admin/Dashboard";
 import AdminBooks from "../pages/admin/Books";
 import AdminCategories from "../pages/admin/Categories";
 import AdminStudents from "../pages/admin/Students";
@@ -59,7 +59,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "dashboard",
-        element: <AdminDashboard />,
+        element: <AdminAnalytics />,
       },
       {
         path: "books",
@@ -77,10 +77,10 @@ export const router = createBrowserRouter([
         path: "borrowings",
         element: <AdminBorrowings />,
       },
-      {
-        path: "analytics",
-        element: <AdminAnalytics />,
-      },
+      // {
+      //   path: "analytics",
+      //   element: <AdminAnalytics />,
+      // },
     ],
   },
 

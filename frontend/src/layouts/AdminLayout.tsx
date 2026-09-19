@@ -55,12 +55,7 @@ export const AdminLayout: React.FC = () => {
       name: "Borrowings Log",
       path: "/admin/borrowings",
       icon: BookmarkCheck,
-    },
-    {
-      name: "Analytics",
-      path: "/admin/analytics",
-      icon: BarChart3,
-    },
+    }
   ];
 
   return (
