@@ -1,6 +1,7 @@
 // src/pages/student/Books.tsx
 import React, { useState } from 'react';
 import { useGetBooksQuery } from '../../features/book/bookApi';
+import { BookActionButton } from '../../features/book/components/BookActionButton';
 
 
 export const Books: React.FC = () => {
@@ -64,16 +65,9 @@ export const Books: React.FC = () => {
                     </span>
                     <span className="text-gray-400">{book.floor} • {book.shelf}</span>
                   </div>
-<a 
-  href={`/student/books/${book.id}`} 
-  className={`block w-full text-center text-xs font-medium py-2.5 rounded-md transition ${
-    isAvailable ? 'bg-blue-600 hover:bg-blue-700 text-white' : 
-    isHighDemand ? 'bg-amber-500 hover:bg-amber-600 text-white' : 
-    'bg-gray-100 hover:bg-gray-200 text-gray-800'
-  }`}
->
-  {isAvailable ? 'Borrow Now' : isHighDemand ? 'Claim Final Copy' : 'Join Waitlist'}
-</a>
+<div className="mt-auto pt-3 border-t border-gray-50">
+  <BookActionButton book={book} />
+</div>
                 </div>
               </div>
             );
