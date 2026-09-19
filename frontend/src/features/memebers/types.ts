@@ -53,4 +53,9 @@ export interface PaginatedMembersResponse {
   totalPages: number;
 }
 
-
+export interface UpdateMemberProfileRequest {
+  name?: string;
+  email?: string;
+  faculty?: string;
+  tier?: string;
+}

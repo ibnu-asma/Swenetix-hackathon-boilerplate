@@ -1,19 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
-import genericReducer from "../features/generic/genericSlice";
-import { bookApi } from "../features/book/bookApi";
-import { memberApi } from "../features/memebers/memberApi";
+
+import authReducer from "../features/auth/authSlice";
+import { apiSlice } from "../features/api/apiSlice";
 
 export const store = configureStore({
   reducer: {
-  generic: genericReducer,
-    [bookApi.reducerPath]: bookApi.reducer,
-    [memberApi.reducerPath]: memberApi.reducer
+    auth: authReducer,
+    [apiSlice.reducerPath]: apiSlice.reducer,
   },
+
   middleware: (getDefaultMiddleware) =>
-  getDefaultMiddleware().concat(
-      bookApi.middleware,
-      memberApi.middleware // <-- Add this
-    ),
+    getDefaultMiddleware().concat(apiSlice.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

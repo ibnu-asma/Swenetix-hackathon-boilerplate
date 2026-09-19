@@ -14,6 +14,7 @@ export interface BorrowedItem {
   renewalsRemaining?: number;
 }
 export interface MemberProfile {
+  email: string;
   id: string;
   name: string;
   memberId: string;
