@@ -33,6 +33,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use("/api/borrow", borrowRoutes);
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 mongoose.connect(process.env.MONGO_URI ?? "mongodb://localhost:27017/library_db")
   .then(() => {
