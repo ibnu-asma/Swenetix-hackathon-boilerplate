@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { BookOpen, Mail, Lock, User as UserIcon, Shield, AlertCircle, ArrowRight, Loader2 } from "lucide-react";
+import { BookOpen, Mail, Lock, AlertCircle, ArrowRight, Loader2, ShieldAlert } from "lucide-react";
 
 import { useRegisterMutation } from "../../features/auth/authApi";
-import { setCredentials, UserRole } from "../../features/auth/authSlice";
+import { setCredentials } from "../../features/auth/authSlice";
 import { useAppDispatch } from "../../app/hooks";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
@@ -27,7 +27,6 @@ function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState<UserRole>("member");
 
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -52,7 +51,7 @@ function Register() {
         email: email.trim(),
         password,
         confirmPassword,
-        role,
+        role: "member",
       }).unwrap();
 
       dispatch(
@@ -62,11 +61,7 @@ function Register() {
         })
       );
 
-      if (response.user.role === "admin") {
-        navigate("/admin/books");
-      } else {
-        navigate("/member/dashboard");
-      }
+      navigate("/member/dashboard");
     } catch (error: any) {
       console.error("Registration failed:", error);
       const msg =
@@ -85,10 +80,10 @@ function Register() {
             <BookOpen className="w-6 h-6" />
           </div>
           <CardTitle className="text-2xl font-bold tracking-tight">
-            Create an Account
+            Create a Member Account
           </CardTitle>
           <CardDescription className="text-sm">
-            Join the Smart Library System as a Member or Admin
+            Join the Smart Library System as a student or library member
           </CardDescription>
         </CardHeader>
 
@@ -101,39 +96,6 @@ function Register() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Role Selection */}
-            <div className="space-y-2">
-              <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Select Account Role
-              </label>
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  onClick={() => setRole("member")}
-                  className={`flex items-center justify-center gap-2 p-3 rounded-lg border text-sm font-medium transition-all ${
-                    role === "member"
-                      ? "border-primary bg-primary/10 text-primary ring-2 ring-primary/20"
-                      : "border-input bg-card text-muted-foreground hover:bg-accent"
-                  }`}
-                >
-                  <UserIcon className="w-4 h-4" />
-                  <span>Member</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setRole("admin")}
-                  className={`flex items-center justify-center gap-2 p-3 rounded-lg border text-sm font-medium transition-all ${
-                    role === "admin"
-                      ? "border-primary bg-primary/10 text-primary ring-2 ring-primary/20"
-                      : "border-input bg-card text-muted-foreground hover:bg-accent"
-                  }`}
-                >
-                  <Shield className="w-4 h-4" />
-                  <span>Admin</span>
-                </button>
-              </div>
-            </div>
-
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
                 <label
@@ -181,7 +143,7 @@ function Register() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@library.com"
+                  placeholder="john.doe@example.com"
                   required
                   className="pl-9"
                 />
@@ -244,7 +206,7 @@ function Register() {
                 </>
               ) : (
                 <>
-                  Create Account
+                  Register as Member
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </>
               )}
@@ -252,7 +214,7 @@ function Register() {
           </form>
         </CardContent>
 
-        <CardFooter className="flex flex-col border-t pt-4 text-center text-sm text-muted-foreground">
+        <CardFooter className="flex flex-col space-y-3 border-t pt-4 text-center text-sm text-muted-foreground">
           <p>
             Already have an account?{" "}
             <Link
@@ -262,6 +224,17 @@ function Register() {
               Sign In
             </Link>
           </p>
+
+          <div className="p-3 bg-muted/60 border border-border/70 rounded-lg text-xs flex items-start gap-2 text-left">
+            <ShieldAlert className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+            <span>
+              <strong>Staff & Administrators:</strong> Administrative accounts cannot be self-registered. Please{" "}
+              <Link to="/login" className="text-primary font-semibold hover:underline">
+                Sign In
+              </Link>{" "}
+              using your assigned librarian credentials.
+            </span>
+          </div>
         </CardFooter>
       </Card>
     </div>

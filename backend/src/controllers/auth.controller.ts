@@ -37,13 +37,13 @@ export const registerHandler = async (req: Request, res: Response): Promise<Resp
     }
     const profileImage = req.file ? `/uploads/${req.file.filename}` : imageUrl;
 
-    // Insert new user record into MongoDB
+    // Insert new user record into MongoDB (public registration is strictly for members)
     const user = await User.create({
       firstName,
       lastName,
       email: email.toLowerCase(), // Normalize emails to lowercase
       password,
-      role,
+      role: "member",
       profileImage,
     });
 

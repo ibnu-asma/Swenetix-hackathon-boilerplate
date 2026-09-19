@@ -15,7 +15,9 @@ import {
   Calendar,
   Eye,
   Key,
+  BookmarkPlus,
 } from "lucide-react";
+import { BorrowBookModal } from "../../features/borrowing/components/BorrowBookModal";
 import {
   useGetAllUsersQuery,
   useAddMemberMutation,
@@ -61,6 +63,8 @@ export const AdminStudents: React.FC = () => {
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isBorrowOpen, setIsBorrowOpen] = useState(false);
+  const [borrowUserId, setBorrowUserId] = useState("");
 
   // Selected User for View / Delete
   const [activeUser, setActiveUser] = useState<UserMember | null>(null);
@@ -461,6 +465,18 @@ export const AdminStudents: React.FC = () => {
                           <Button
                             variant="ghost"
                             size="sm"
+                            onClick={() => {
+                              setBorrowUserId(member._id || member.id || "");
+                              setIsBorrowOpen(true);
+                            }}
+                            className="h-8 w-8 p-0 text-primary hover:text-primary hover:bg-primary/10"
+                            title="Issue Book Loan"
+                          >
+                            <BookmarkPlus className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
                             onClick={() => handleOpenView(member)}
                             className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground"
                             title="View Profile Details"
@@ -760,6 +776,14 @@ export const AdminStudents: React.FC = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Quick Issue Loan Modal */}
+      <BorrowBookModal
+        open={isBorrowOpen}
+        onOpenChange={setIsBorrowOpen}
+        preselectedUserId={borrowUserId}
+        onSuccess={(msg) => showNotification("success", msg)}
+      />
     </div>
   );
 };

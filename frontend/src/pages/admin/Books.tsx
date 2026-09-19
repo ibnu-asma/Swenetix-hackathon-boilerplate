@@ -15,7 +15,9 @@ import {
   Loader2,
   Image as ImageIcon,
   Tag,
+  BookmarkPlus,
 } from "lucide-react";
+import { BorrowBookModal } from "../../features/borrowing/components/BorrowBookModal";
 import {
   useGetBooksQuery,
   useAddBookMutation,
@@ -82,6 +84,8 @@ export const AdminBooks: React.FC = () => {
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isBorrowOpen, setIsBorrowOpen] = useState(false);
+  const [borrowBookId, setBorrowBookId] = useState("");
 
   // Selected Book for Edit/Delete
   const [activeBook, setActiveBook] = useState<Book | null>(null);
@@ -528,6 +532,18 @@ export const AdminBooks: React.FC = () => {
                           <Button
                             variant="ghost"
                             size="sm"
+                            onClick={() => {
+                              setBorrowBookId(book.id || book._id || "");
+                              setIsBorrowOpen(true);
+                            }}
+                            className="h-8 w-8 p-0 text-primary hover:text-primary hover:bg-primary/10"
+                            title="Issue Loan to Member"
+                          >
+                            <BookmarkPlus className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
                             onClick={() => handleOpenEdit(book)}
                             className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground"
                             title="Edit Book"
@@ -934,6 +950,14 @@ export const AdminBooks: React.FC = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Quick Issue Loan Modal */}
+      <BorrowBookModal
+        open={isBorrowOpen}
+        onOpenChange={setIsBorrowOpen}
+        preselectedBookId={borrowBookId}
+        onSuccess={(msg) => showNotification("success", msg)}
+      />
     </div>
   );
 };

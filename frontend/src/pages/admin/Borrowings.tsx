@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import {
   BookmarkCheck,
+  BookmarkPlus,
   Search,
   Filter,
   CheckCircle2,
@@ -16,6 +17,7 @@ import {
   useGetAllBorrowingsQuery,
   useAdminReturnBorrowingMutation,
 } from "../../features/borrowing/borrowingApi";
+import { BorrowBookModal } from "../../features/borrowing/components/BorrowBookModal";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Badge } from "../../components/ui/badge";
@@ -38,6 +40,7 @@ import {
 export const AdminBorrowings: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [isBorrowOpen, setIsBorrowOpen] = useState(false);
 
   const [notification, setNotification] = useState<{
     type: "success" | "error";
@@ -149,6 +152,10 @@ export const AdminBorrowings: React.FC = () => {
               className={`w-4 h-4 ${isFetching ? "animate-spin" : ""}`}
             />
             Refresh
+          </Button>
+          <Button onClick={() => setIsBorrowOpen(true)} className="gap-2 shadow-sm">
+            <BookmarkPlus className="w-4 h-4" />
+            Issue New Loan
           </Button>
         </div>
       </div>
@@ -424,6 +431,13 @@ export const AdminBorrowings: React.FC = () => {
           )}
         </CardContent>
       </Card>
+
+      {/* Issue Loan Dialog */}
+      <BorrowBookModal
+        open={isBorrowOpen}
+        onOpenChange={setIsBorrowOpen}
+        onSuccess={(msg) => showNotification("success", msg)}
+      />
     </div>
   );
 };
