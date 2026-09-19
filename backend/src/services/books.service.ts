@@ -25,7 +25,7 @@ interface UpdateBookData {
   coverImage?: string;
   categoryId?: string;
   description?: string;
-  quantity: number;
+  quantity?: number;
 }
 
 export const createBook = async (data: CreateBookData) => {
@@ -138,11 +138,10 @@ export const updateBook = async (
     }
   }
 
-  if(data.quantity <= 0){
+  if(data.quantity && data.quantity <= 0){
     throw new Error("Quantity must be greater than 0");
   }
 
-  // If ISBN is being changed, make sure it isn't already used
   if (data.isbn && data.isbn !== book.isbn) {
     const existingBook = await Book.findOne({
       isbn: data.isbn,
