@@ -2,7 +2,7 @@ import { Schema, model, Document, Types } from "mongoose";
 
 export interface IBorrowing extends Document {
   userId: Types.ObjectId;
-  copyId: Types.ObjectId;
+  bookId: Types.ObjectId;
   borrowedAt: Date;
   dueDate: Date;
   returnDate?: Date | null;
@@ -19,9 +19,9 @@ const borrowingSchema = new Schema<IBorrowing>(
       required: true,
     },
 
-    copyId: {
+    bookId: {
       type: Schema.Types.ObjectId,
-      ref: "Copy",
+      ref: "Book",
       required: true,
     },
 

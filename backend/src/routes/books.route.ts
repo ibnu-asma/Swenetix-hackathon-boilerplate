@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { createBook, getBooks, getBookById, updateBook, deleteBook } from "../controllers/books.controller";
-
+import { verifyToken, requireAdmin } from "../middleware/auth";
 const router = Router();
 
 
@@ -24,7 +24,7 @@ const router = Router();
  *       500:
  *         description: Internal server error
  */
-router.post("/", createBook);
+router.post("/",verifyToken, requireAdmin, createBook);
 /**
  * @swagger
  * /api/books:
@@ -85,7 +85,7 @@ router.get("/:id", getBookById);
  *       500:
  *         description: Internal server error
  */
-router.put("/:id", updateBook);
+router.put("/:id", verifyToken, requireAdmin, updateBook);
 /**
  * @swagger
  * /api/books/:id:
@@ -106,6 +106,6 @@ router.put("/:id", updateBook);
  *       500:
  *         description: Internal server error
  */
-router.delete("/:id", deleteBook);
+router.delete("/:id",verifyToken, requireAdmin, deleteBook);
  
 export default router;

@@ -2,6 +2,8 @@ import { Router } from 'express';
 import { registerHandler, loginHandler, logoutHandler } from '../controllers/auth.controller';
 import {registerUserSchema} from '../utils/schemas';
 import { validate } from '../middleware/validate';
+import { upload } from '../middleware/upload';
+
 
 
 
@@ -59,7 +61,7 @@ const router = Router();
  *         description: Validation or duplication error
  */
 
-router.post('/register', validate(registerUserSchema), registerHandler);
+router.post('/register', upload.single('profileImage'), validate(registerUserSchema), registerHandler);
 
 /**
  * @swagger
