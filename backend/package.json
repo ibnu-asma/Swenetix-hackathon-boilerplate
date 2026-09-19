@@ -7,6 +7,7 @@
     "dev": "nodemon src/index.ts",
     "build": "tsc",
     "seed:db" : "npx ts-node src/seeds/user.seed.ts",
+    "seed:books" : "npx ts-node src/seeds/book.seed.ts",
     "start": "node dist/index.js",
     "lint": "tsc --noEmit"
   },
