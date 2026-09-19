@@ -4,7 +4,6 @@ import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 
 import AdminLayout from "../layouts/AdminLayout";
-import StudentLayout from "../layouts/StudentLayout";
 import AuthLayout from "../layouts/AuthLayout";
 
 import AdminDashboard from "../pages/admin/Dashboard";
@@ -20,7 +19,16 @@ import EntryRedirect from "../pages/EntryRedirect";
 // import MyBooks from "../pages/student/";
 // import History from "../pages/student/History";
 // import StudentAI from "../pages/student/AI";
+import { StudentLayout } from '../layouts/StudentLayout';
 
+import { Books } from '../pages/student/Books';
+
+import { MyBooks } from '../pages/student/MyBooks';
+import { BorrowingHistory } from '../pages/student/BorrowingHistory';
+import { Reservations } from '../pages/student/Reservations';
+import { BookDetails } from "../pages/student/BookDetails";
+import Dashboard from "../pages/admin/Dashboard";
+import { Profile } from "../pages/student/profile";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -66,34 +74,17 @@ export const router = createBrowserRouter([
     ],
   },
 
-  // {
-  //   path: "/student",
-  //   element: <StudentLayout />,
-  //   children: [
-  //     {
-  //       path: "dashboard",
-  //       element: <StudentDashboard />,
-  //     },
-  //     {
-  //       path: "books",
-  //       element: <StudentBooks />,
-  //     },
-  //     {
-  //       path: "books/:id",
-  //       element: <BookDetails />,
-  //     },
-  //     {
-  //       path: "my-books",
-  //       element: <MyBooks />,
-  //     },
-  //     {
-  //       path: "history",
-  //       element: <History />,
-  //     },
-  //     {
-  //       path: "ai",
-  //       element: <StudentAI />,
-  //     },
-  //   ],
-  // },
+  {
+    path: '/student',
+    element: <StudentLayout />,
+    children: [
+      { path: 'dashboard', element: <Dashboard /> },
+      { path: 'books', element: <Books /> },
+      { path: 'books/:id', element: <BookDetails /> },
+      { path: 'my-books', element: <MyBooks /> },
+      { path: 'history', element: <BorrowingHistory /> },
+      { path: 'reservations', element: <Reservations /> },
+      { path: 'profile', element: <Profile /> },
+    ],
+  },
 ]);
