@@ -25,7 +25,7 @@ const generateToken = (user: { _id: any; role: "member" | "librarian" }): string
 // 2. Register Handler
 export const registerHandler = async (req: Request, res: Response): Promise<Response | void> => {
   try {
-    const { firstName, lastName, email, password, role, profileImage } = req.body;
+    const { firstName, lastName, email, password, role, profileImage: imageUrl } = req.body;
 
     // Proactive check before hitting the database
     const existingUser = await User.findOne({ email: email.toLowerCase() });
@@ -35,6 +35,7 @@ export const registerHandler = async (req: Request, res: Response): Promise<Resp
         message: "Registration failed: A user with this email already exists." 
       });
     }
+    const profileImage = req.file ? `/uploads/${req.file.filename}` : imageUrl;
 
     // Insert new user record into MongoDB
     const user = await User.create({
@@ -60,6 +61,7 @@ export const registerHandler = async (req: Request, res: Response): Promise<Resp
       token,
       role: userObj.role,
       user: {
+        id: userObj._id,
         firstName: userObj.firstName,
         lastName: userObj.lastName,
         email: userObj.email,

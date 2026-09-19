@@ -12,6 +12,7 @@ interface CreateBookData {
   title: string;
   author: string;
   isbn: string;
+  coverImage?: string;
   categoryId: string;
   description?: string;
   quantity: number;
@@ -21,13 +22,14 @@ interface UpdateBookData {
   title?: string;
   author?: string;
   isbn?: string;
+  coverImage?: string;
   categoryId?: string;
   description?: string;
   quantity: number;
 }
 
 export const createBook = async (data: CreateBookData) => {
-  const { title, author, isbn, categoryId, description, quantity } = data;
+  const { title, author, isbn, coverImage, categoryId, description, quantity } = data;
 
   // Make sure the category exists
   const category = await Category.findById(categoryId);
@@ -50,6 +52,7 @@ export const createBook = async (data: CreateBookData) => {
   const book = await Book.create({
     title,
     author,
+    coverImage,
     isbn,
     categoryId,
     description,
