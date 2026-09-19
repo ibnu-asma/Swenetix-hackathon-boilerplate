@@ -8,6 +8,7 @@ import userRoutes from './routes/user.routes';
 import bookRoutes from './routes/books.route';
 import categoryRoutes from './routes/category.route';
 import path from 'path';
+import statsRoutes from './routes/stats.route';
 
 import borrowRoutes from "./routes/borrow.routes";
 dotenv.config();
@@ -34,6 +35,7 @@ app.use('/api/books', bookRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use("/api/borrow", borrowRoutes);
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+app.use('/api/stats', statsRoutes);
 
 mongoose.connect(process.env.MONGO_URI ?? "mongodb://localhost:27017/library_db")
   .then(() => {
