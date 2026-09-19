@@ -30,15 +30,15 @@ export const AdminLayout: React.FC = () => {
 
   const navItems = [
     {
+      name: "Overview Dashboard",
+      path: "/admin/dashboard",
+      icon: LayoutDashboard,
+    },
+    {
       name: "Books Management",
       path: "/admin/books",
       icon: BookOpen,
       highlight: true,
-    },
-    {
-      name: "Overview Dashboard",
-      path: "/admin/dashboard",
-      icon: LayoutDashboard,
     },
     {
       name: "Members / Users",

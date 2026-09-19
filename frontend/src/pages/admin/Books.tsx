@@ -330,7 +330,7 @@ export const AdminBooks: React.FC = () => {
             <p className="text-xs text-muted-foreground mt-0.5">Active titles cataloged</p>
           </CardContent>
         </Card>
-
+{/* 
         <Card className="shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
@@ -342,7 +342,7 @@ export const AdminBooks: React.FC = () => {
             <div className="text-2xl font-bold">{stats.totalCopies}</div>
             <p className="text-xs text-muted-foreground mt-0.5">Physical items on shelf</p>
           </CardContent>
-        </Card>
+        </Card> */}
 
         <Card className="shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
