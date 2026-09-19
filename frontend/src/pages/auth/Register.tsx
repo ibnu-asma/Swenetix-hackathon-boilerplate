@@ -225,7 +225,7 @@ function Register() {
             </Link>
           </p>
 
-          <div className="p-3 bg-muted/60 border border-border/70 rounded-lg text-xs flex items-start gap-2 text-left">
+          {/* <div className="p-3 bg-muted/60 border border-border/70 rounded-lg text-xs flex items-start gap-2 text-left">
             <ShieldAlert className="w-4 h-4 text-primary shrink-0 mt-0.5" />
             <span>
               <strong>Staff & Administrators:</strong> Administrative accounts cannot be self-registered. Please{" "}
@@ -234,7 +234,7 @@ function Register() {
               </Link>{" "}
               using your assigned librarian credentials.
             </span>
-          </div>
+          </div> */}
         </CardFooter>
       </Card>
     </div>

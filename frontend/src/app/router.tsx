@@ -55,7 +55,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to="/admin/books" replace />,
+        element: <Navigate to="/admin/dashboard" replace />,
       },
       {
         path: "dashboard",
