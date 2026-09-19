@@ -33,7 +33,7 @@ export const verifyToken = (req: CustomRequest, res: Response, next: NextFunctio
 // 3. Checks if the logged-in user is an ADMIN
 export const requireAdmin = (req: CustomRequest, res: Response, next: NextFunction): void | Response => {
   // Use optional chaining (?.) because req.user could technically be undefined if middleware order is broken
-  if (req.user && typeof req.user !== 'string' && req.user.role !== 'admin') {
+  if (req.user && typeof req.user !== 'string' && req.user.role !== 'librarian') {
     return res.status(403).json({ success: false, message: "Forbidden: You must be an Admin to do this." });
   }
   next();
