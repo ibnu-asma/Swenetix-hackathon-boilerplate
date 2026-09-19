@@ -1,34 +1,30 @@
-import { createBrowserRouter, Outlet } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 
 import AdminLayout from "../layouts/AdminLayout";
 import AuthLayout from "../layouts/AuthLayout";
+import { StudentLayout } from "../layouts/StudentLayout";
 
 import AdminDashboard from "../pages/admin/Dashboard";
 import AdminBooks from "../pages/admin/Books";
 import AdminStudents from "../pages/admin/Students";
 import AdminBorrowings from "../pages/admin/Borrowings";
 import AdminAnalytics from "../pages/admin/Analytics";
-import EntryRedirect from "../pages/EntryRedirect";
 
-// import StudentDashboard from "../pages/student/dashboard";
-// import StudentBooks from "../pages/student/Books";
-// import BookDetails from "../pages/student/BookDetails";
-// import MyBooks from "../pages/student/";
-// import History from "../pages/student/History";
-// import StudentAI from "../pages/student/AI";
-import { StudentLayout } from '../layouts/StudentLayout';
-
-import { Books } from '../pages/student/Books';
-
-import { MyBooks } from '../pages/student/MyBooks';
-import { BorrowingHistory } from '../pages/student/BorrowingHistory';
-import { Reservations } from '../pages/student/Reservations';
+import { Dashboard as StudentDashboard } from "../pages/student/dashboard";
+import { Books as StudentBooks } from "../pages/student/Books";
 import { BookDetails } from "../pages/student/BookDetails";
-import Dashboard from "../pages/admin/Dashboard";
+import { MyBooks } from "../pages/student/MyBooks";
+import { BorrowingHistory } from "../pages/student/BorrowingHistory";
+import { Reservations } from "../pages/student/Reservations";
 import { Profile } from "../pages/student/profile";
+import { Notifications } from "../pages/student/notifications";
+
+import EntryRedirect from "../pages/EntryRedirect";
+import { ProtectedRoute } from "./ProtectedRoute";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -47,10 +43,19 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  // ADMIN ROUTES (Protected for Admin only)
   {
     path: "/admin",
-    element: <AdminLayout />,
+    element: (
+      <ProtectedRoute allowedRoles={["admin"]}>
+        <AdminLayout />
+      </ProtectedRoute>
+    ),
     children: [
+      {
+        index: true,
+        element: <Navigate to="/admin/books" replace />,
+      },
       {
         path: "dashboard",
         element: <AdminDashboard />,
@@ -74,17 +79,57 @@ export const router = createBrowserRouter([
     ],
   },
 
+  // MEMBER ROUTES (Protected for Member and Admin)
   {
-    path: '/student',
-    element: <StudentLayout />,
+    path: "/member",
+    element: (
+      <ProtectedRoute allowedRoles={["member", "admin"]}>
+        <StudentLayout />
+      </ProtectedRoute>
+    ),
     children: [
-      { path: 'dashboard', element: <Dashboard /> },
-      { path: 'books', element: <Books /> },
-      { path: 'books/:id', element: <BookDetails /> },
-      { path: 'my-books', element: <MyBooks /> },
-      { path: 'history', element: <BorrowingHistory /> },
-      { path: 'reservations', element: <Reservations /> },
-      { path: 'profile', element: <Profile /> },
+      {
+        index: true,
+        element: <Navigate to="/member/dashboard" replace />,
+      },
+      { path: "dashboard", element: <StudentDashboard /> },
+      { path: "books", element: <StudentBooks /> },
+      { path: "books/:id", element: <BookDetails /> },
+      { path: "my-books", element: <MyBooks /> },
+      { path: "history", element: <BorrowingHistory /> },
+      { path: "reservations", element: <Reservations /> },
+      { path: "profile", element: <Profile /> },
+      { path: "notifications", element: <Notifications /> },
     ],
+  },
+
+  // STUDENT ROUTES (Backward compatibility alias to member views)
+  {
+    path: "/student",
+    element: (
+      <ProtectedRoute allowedRoles={["member", "admin"]}>
+        <StudentLayout />
+      </ProtectedRoute>
+    ),
+    children: [
+      {
+        index: true,
+        element: <Navigate to="/student/dashboard" replace />,
+      },
+      { path: "dashboard", element: <StudentDashboard /> },
+      { path: "books", element: <StudentBooks /> },
+      { path: "books/:id", element: <BookDetails /> },
+      { path: "my-books", element: <MyBooks /> },
+      { path: "history", element: <BorrowingHistory /> },
+      { path: "reservations", element: <Reservations /> },
+      { path: "profile", element: <Profile /> },
+      { path: "notifications", element: <Notifications /> },
+    ],
+  },
+
+  // Catch-all
+  {
+    path: "*",
+    element: <Navigate to="/" replace />,
   },
 ]);

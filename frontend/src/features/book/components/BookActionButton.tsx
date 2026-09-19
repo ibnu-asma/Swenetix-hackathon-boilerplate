@@ -14,7 +14,6 @@ export const BookActionButton: React.FC<BookActionButtonProps> = ({ book }) => {
   const [errorMsg, setErrorMsg] = useState('');
 
   const isAvailable = book.availableCopies > 1;
-  const isHighDemand = book.availableCopies === 1;
   const isOutOfStock = book.availableCopies === 0;
 
   const handleBorrow = async (e: React.MouseEvent) => {

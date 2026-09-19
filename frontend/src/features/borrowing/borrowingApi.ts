@@ -1,73 +1,64 @@
 // features/borrowing/borrowingApi.ts
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { apiSlice } from "../api/apiSlice";
 import { 
   BorrowedItem, 
   MemberProfile, 
   CreateBorrowRequest, 
   ReturnBookRequest,
   PaginatedBorrowHistoryResponse
-} from './types';
+} from "./types";
 
-export const borrowingApi = createApi({
-  reducerPath: 'borrowingApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/api' }), // Replace with your backend URL
-  // Added 'History' and 'Book' to tagTypes
-  tagTypes: ['Borrowings', 'Profile', 'History', 'Book'],
+export const borrowingApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    
-    // --- EXISTING ENDPOINTS ---
+    // 1. Get Member Profile
     getMemberProfile: builder.query<MemberProfile, void>({
-      query: () => '/member/profile',
-      providesTags: ['Profile'],
+      query: () => "/member/profile",
+      providesTags: ["Members"],
     }),
     
+    // 2. Get Current Borrowings
     getCurrentBorrowings: builder.query<BorrowedItem[], void>({
-      query: () => '/borrowings/current',
-      providesTags: ['Borrowings'],
+      query: () => "/borrowings/current",
+      providesTags: ["Borrowings"],
     }),
     
+    // 3. Renew Book
     renewBook: builder.mutation<{ success: boolean }, string>({
       query: (bookId) => ({
         url: `/borrowings/${bookId}/renew`,
-        method: 'POST',
+        method: "POST",
       }),
-      invalidatesTags: ['Borrowings'],
+      invalidatesTags: ["Borrowings"],
     }),
 
-    // --- NEW ENDPOINTS ---
-
-    // 1. BORROW (CHECKOUT) A BOOK
+    // 4. Borrow (Checkout) a Book
     borrowBook: builder.mutation<{ success: boolean; message: string }, CreateBorrowRequest>({
       query: (body) => ({
-        url: '/borrowings', // or '/borrowings/checkout'
-        method: 'POST',
+        url: "/borrowings",
+        method: "POST",
         body,
       }),
-      // Invalidate current borrowings, history, and the specific book (to update available copies)
-      invalidatesTags: ['Borrowings', 'History', 'Book'],
+      invalidatesTags: ["Borrowings", "Books"],
     }),
 
-    // 2. GET BORROWING HISTORY (With Pagination)
+    // 5. Get Borrowing History
     getBorrowingHistory: builder.query<PaginatedBorrowHistoryResponse, { page?: number; limit?: number } | void>({
       query: (params) => ({
-        url: '/borrowings/history',
-        method: 'GET',
+        url: "/borrowings/history",
+        method: "GET",
         params: params || { page: 1, limit: 10 },
       }),
-      providesTags: ['History'],
+      providesTags: ["Borrowings"],
     }),
 
-    // 3. RETURN A BOOK
+    // 6. Return a Book
     returnBook: builder.mutation<{ success: boolean; message: string }, ReturnBookRequest>({
       query: ({ borrowingId, ...body }) => ({
         url: `/borrowings/${borrowingId}/return`,
-        method: 'POST', // Use 'PUT' if your backend uses PUT for updates
+        method: "POST",
         body,
       }),
-      // Invalidate current borrowings to remove the book from the dashboard
-      // Invalidate history to add the returned book to the history log
-      // Invalidate Book to update available copies in the catalog
-      invalidatesTags: ['Borrowings', 'History', 'Book'],
+      invalidatesTags: ["Borrowings", "Books"],
     }),
   }),
 });
@@ -76,7 +67,6 @@ export const {
   useGetMemberProfileQuery, 
   useGetCurrentBorrowingsQuery,
   useRenewBookMutation,
-  // Export new hooks
   useBorrowBookMutation,
   useGetBorrowingHistoryQuery,
   useReturnBookMutation,

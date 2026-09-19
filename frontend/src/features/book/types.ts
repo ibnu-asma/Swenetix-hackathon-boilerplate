@@ -1,57 +1,74 @@
 export type BookAvailability = 'available' | 'high-demand' | 'out-of-stock';
 
-export interface CatalogBook {
-  id: string;
-  title: string;
-  author: string;
-  coverUrl: string;
-  availability: BookAvailability;
-  copiesAvailable: number;
-  totalCopies: number;
-  floor?: string;
-  shelf?: string;
+export interface Category {
+  _id: string;
+  name: string;
 }
-// features/books/types.ts
 
-export interface Book {
-  id: string;
+export interface BackendBook {
+  _id: string;
   title: string;
   author: string;
   isbn: string;
-  edition: string;
-  publisher: string;
-  year: string;
-  description: string;
-  coverUrl: string;
-  category: string;
-  totalCopies: number;
-  availableCopies: number;
-  floor: string;
-  shelf: string;
-  waitlistCount: number;
-  aiSummary?: string; // Optional, for the AI Insights tab
+  categoryId: Category | string;
+  quantity: number;
+  coverImage?: string;
+  description?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
-// Payload for creating a new book (omits system-generated fields like id)
-export interface CreateBookRequest extends Omit<Book, 'id' | 'waitlistCount'> {}
+export interface Book {
+  id: string;
+  _id: string;
+  title: string;
+  author: string;
+  isbn: string;
+  categoryId: string;
+  categoryName: string;
+  category: string;
+  quantity: number;
+  totalCopies: number;
+  availableCopies: number;
+  coverUrl: string;
+  coverImage?: string;
+  description: string;
+  floor?: string;
+  shelf?: string;
+  waitlistCount?: number;
+  aiSummary?: string;
+  edition?: string;
+  publisher?: string;
+  year?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
 
-// Payload for updating a book (all fields optional except id)
+export interface CreateBookRequest {
+  title: string;
+  author: string;
+  isbn: string;
+  categoryId: string;
+  quantity: number;
+  description?: string;
+  coverImage?: string;
+}
+
 export interface UpdateBookRequest extends Partial<CreateBookRequest> {
   id: string;
 }
 
-// Parameters for list and search queries
 export interface SearchBooksParams {
   page?: number;
   limit?: number;
+  search?: string;
   searchTerm?: string;
   category?: string;
-  availability?: 'all' | 'available' | 'out-of-stock';
 }
 
-// Standard paginated response structure
 export interface PaginatedBooksResponse {
   data: Book[];
+  books: Book[];
   total: number;
   page: number;
   limit: number;
