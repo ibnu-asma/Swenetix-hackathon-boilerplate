@@ -14,34 +14,43 @@ export interface MemberProfile {
   };
   fines: number;
 }
+// features/members/types.ts
 
-// features/borrowing/types.ts
-export type BorrowStatus = 'active' | 'overdue' | 'due-soon';
-
-export interface BorrowedItem {
+export interface Member {
   id: string;
-  title: string;
-  author: string;
-  isbn: string;
-  coverUrl: string;
-  status: BorrowStatus;
-  borrowedDate: string;
-  dueDate: string;
-  fineAmount?: number;
-  renewalsRemaining?: number;
+  name: string;
+  memberId: string; // e.g., "#LIB-8841"
+  email: string;
+  tier: string; // e.g., "Graduate Research"
+  faculty: string; // e.g., "Faculty of Computer & Information Science"
+  cardStatus: string; // e.g., "Valid thru Jul 2026"
+  status: 'active' | 'suspended' | 'expired';
+  joinDate: string;
+  avatarUrl?: string;
+  currentLoans: number;
+  fines: number;
 }
 
-// features/books/types.ts
-export type BookAvailability = 'available' | 'high-demand' | 'out-of-stock';
-
-export interface CatalogBook {
-  id: string;
-  title: string;
-  author: string;
-  coverUrl: string;
-  availability: BookAvailability;
-  copiesAvailable: number;
-  totalCopies: number;
-  floor?: string;
-  shelf?: string;
+// Payload for creating a new member
+export interface CreateMemberRequest extends Omit<Member, 'id' | 'currentLoans' | 'fines'> {
+  password?: string; // If admin is creating the account
 }
+
+// Parameters for list/search queries
+export interface SearchMembersParams {
+  page?: number;
+  limit?: number;
+  searchTerm?: string;
+  status?: 'all' | 'active' | 'suspended';
+}
+
+// Standard paginated response
+export interface PaginatedMembersResponse {
+  data: Member[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+
