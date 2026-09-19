@@ -11,6 +11,7 @@ import {
   X,
   Shield,
   Plus,
+  Layers,
 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { logout } from "../features/auth/authSlice";
@@ -39,6 +40,11 @@ export const AdminLayout: React.FC = () => {
       path: "/admin/books",
       icon: BookOpen,
       highlight: true,
+    },
+    {
+      name: "Categories",
+      path: "/admin/categories",
+      icon: Layers,
     },
     {
       name: "Members / Users",

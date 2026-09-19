@@ -184,6 +184,25 @@ export const bookApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Categories"],
     }),
+
+    // 9. UPDATE CATEGORY
+    updateCategory: builder.mutation<Category, { id: string; name: string }>({
+      query: ({ id, name }) => ({
+        url: `/categories/${id}`,
+        method: "PUT",
+        body: { name },
+      }),
+      invalidatesTags: ["Categories", { type: "Books", id: "LIST" }],
+    }),
+
+    // 10. DELETE CATEGORY
+    deleteCategory: builder.mutation<{ success: boolean; message?: string }, string>({
+      query: (id) => ({
+        url: `/categories/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Categories", { type: "Books", id: "LIST" }],
+    }),
   }),
 });
 
@@ -196,4 +215,6 @@ export const {
   useDeleteBookMutation,
   useGetCategoriesQuery,
   useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
 } = bookApi;

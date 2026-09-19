@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import {
   createBorrowing,
   returnBorrowing,
+  getAllBorrowings,
 } from "../services/borrow.service";
 
 export const borrowBook = async (
@@ -9,7 +10,8 @@ export const borrowBook = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { userId, bookId } = req.body;
+    const userId = req.body.userId || req.body.memberId;
+    const bookId = req.body.bookId;
 
     if (!userId || !bookId) {
       res.status(400).json({
@@ -67,3 +69,22 @@ export const returnBook = async (
     });
   }
 };
+
+export const getAllBorrowingsController = async (
+  _req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const borrowings = await getAllBorrowings();
+    res.status(200).json({
+      success: true,
+      data: borrowings,
+    });
+  } catch (error) {
+    console.error("Get all borrowings error:", error);
+    res.status(500).json({
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to fetch borrowings",
+    });
+  }
+};

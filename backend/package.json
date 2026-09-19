@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "nodemon src/index.ts",
     "build": "tsc",
-    "seed:db" : "npx ts-node src/seeds/user.seed.ts",
+    "seed:db": "npx ts-node src/seeds/seed.ts",
+    "seed:all": "npx ts-node src/seeds/seed.ts",
+    "seed:users": "npx ts-node src/seeds/user.seed.ts",
     "start": "node dist/index.js",
     "lint": "tsc --noEmit"
   },

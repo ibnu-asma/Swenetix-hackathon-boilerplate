@@ -60,6 +60,37 @@ export const borrowingApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Borrowings", "Books"],
     }),
+
+    // 7. Get All Borrowings (Admin only)
+    getAllBorrowings: builder.query<any[], void>({
+      query: () => "/borrow",
+      transformResponse: (res: any) => {
+        return Array.isArray(res?.data) ? res.data : [];
+      },
+      providesTags: ["Borrowings"],
+    }),
+
+    // 8. Admin Return Book
+    adminReturnBorrowing: builder.mutation<any, string>({
+      query: (id) => ({
+        url: `/borrow/${id}/return`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["Borrowings", "Books", "Analytics"],
+    }),
+
+    // 9. Admin Issue Borrowing for User
+    adminBorrowBook: builder.mutation<
+      { message: string; borrowing?: any },
+      { userId: string; bookId: string }
+    >({
+      query: (body) => ({
+        url: "/borrow",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Borrowings", "Books", "Analytics"],
+    }),
   }),
 });
 
@@ -70,4 +101,7 @@ export const {
   useBorrowBookMutation,
   useGetBorrowingHistoryQuery,
   useReturnBookMutation,
+  useGetAllBorrowingsQuery,
+  useAdminReturnBorrowingMutation,
+  useAdminBorrowBookMutation,
 } = borrowingApi;

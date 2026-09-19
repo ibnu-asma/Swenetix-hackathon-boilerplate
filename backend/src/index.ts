@@ -34,6 +34,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use("/api/borrow", borrowRoutes);
+app.use("/api/borrowings", borrowRoutes);
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.use('/api/stats', statsRoutes);
 

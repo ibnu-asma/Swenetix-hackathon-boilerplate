@@ -9,6 +9,7 @@ import { StudentLayout } from "../layouts/StudentLayout";
 
 import AdminDashboard from "../pages/admin/Dashboard";
 import AdminBooks from "../pages/admin/Books";
+import AdminCategories from "../pages/admin/Categories";
 import AdminStudents from "../pages/admin/Students";
 import AdminBorrowings from "../pages/admin/Borrowings";
 import AdminAnalytics from "../pages/admin/Analytics";
@@ -63,6 +64,10 @@ export const router = createBrowserRouter([
       {
         path: "books",
         element: <AdminBooks />,
+      },
+      {
+        path: "categories",
+        element: <AdminCategories />,
       },
       {
         path: "students",

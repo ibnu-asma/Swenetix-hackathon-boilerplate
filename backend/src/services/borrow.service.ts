@@ -79,3 +79,13 @@ export const returnBorrowing = async (borrowingId: string) => {
 
   return borrowing;
 };
+
+export const getAllBorrowings = async () => {
+  const borrowings = await Borrowing.find()
+    .populate("userId", "firstName lastName email role profileImage")
+    .populate("bookId", "title author isbn coverImage coverUrl quantity")
+    .sort({ createdAt: -1 })
+    .lean();
+
+  return borrowings;
+};

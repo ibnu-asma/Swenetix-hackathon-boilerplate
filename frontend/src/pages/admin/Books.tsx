@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 import {
   BookOpen,
   Plus,
@@ -309,6 +310,12 @@ export const AdminBooks: React.FC = () => {
             />
             Refresh
           </Button>
+          <Link to="/admin/categories">
+            <Button variant="outline" size="sm" className="gap-1.5">
+              <Layers className="w-4 h-4" />
+              Categories
+            </Button>
+          </Link>
           <Button onClick={handleOpenAdd} className="gap-2 shadow-sm">
             <Plus className="w-4 h-4" />
             Add New Book
@@ -330,32 +337,21 @@ export const AdminBooks: React.FC = () => {
             <p className="text-xs text-muted-foreground mt-0.5">Active titles cataloged</p>
           </CardContent>
         </Card>
-{/* 
-        <Card className="shadow-sm">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-              Total Copies
-            </CardTitle>
-            <Archive className="h-4 w-4 text-emerald-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.totalCopies}</div>
-            <p className="text-xs text-muted-foreground mt-0.5">Physical items on shelf</p>
-          </CardContent>
-        </Card> */}
 
-        <Card className="shadow-sm">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-              Categories
-            </CardTitle>
-            <Layers className="h-4 w-4 text-blue-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{categories.length}</div>
-            <p className="text-xs text-muted-foreground mt-0.5">Subject disciplines</p>
-          </CardContent>
-        </Card>
+        <Link to="/admin/categories" className="block">
+          <Card className="shadow-sm hover:border-primary/40 transition cursor-pointer h-full">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                Categories
+              </CardTitle>
+              <Layers className="h-4 w-4 text-blue-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{categories.length}</div>
+              <p className="text-xs text-muted-foreground mt-0.5">Subject disciplines (Manage →)</p>
+            </CardContent>
+          </Card>
+        </Link>
 
         <Card className="shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
