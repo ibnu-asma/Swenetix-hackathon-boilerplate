@@ -87,3 +87,102 @@ export const librarianAddMemberHandler = async (req: CustomRequest, res: Respons
 };
 
 
+
+// Librarian: Get explicit details of any specific user by ID
+export const getUserByIdHandler = async (req: CustomRequest, res: Response): Promise<Response | void> => {
+  try {
+    const { id } = req.params;
+
+    // Validate if the ID is a valid MongoDB ObjectId structure before querying
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({ success: false, message: "Invalid User ID format" });
+    }
+
+    // Find the user and exclude their password
+    const targetUser = await User.findById(id).select('-password');
+
+    if (!targetUser) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    return res.status(200).json({ success: true, data: targetUser });
+  } catch (error: any) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
+// Librarian: Delete a specific user by ID
+export const deleteUserHandler = async (req: CustomRequest, res: Response): Promise<Response | void> => {
+  try {
+    const { id } = req.params;
+
+    // Validate MongoDB ObjectId format
+    if (!id.match(/^[0-9a-fA-F]{24}\$/)) {
+      return res.status(400).json({ success: false, message: "Invalid User ID format" });
+    }
+
+    // Prohibit librarians from accidentally deleting themselves
+    if (req.user?.id === id) {
+      return res.status(400).json({ success: false, message: "Management Error: You cannot delete your own account." });
+    }
+
+    // Find and delete the user
+    const deletedUser = await User.findByIdAndDelete(id);
+
+    if (!deletedUser) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    return res.status(200).json({ 
+      success: true, 
+      message: `User account associated with ${deletedUser.email} has been successfully deleted.` 
+    });
+  } catch (error: any) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
+
+// User: Update own profile details
+export const updateProfileHandler = async (req: CustomRequest, res: Response): Promise<Response | void> => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ success: false, message: "Unauthorized: User payload missing" });
+    }
+
+    // Extract only fields a user is allowed to change
+    const { firstName, lastName, profileImage: imageUrl } = req.body;
+    
+    // Check if a new file was uploaded via multer, otherwise fall back to the body url string
+    const profileImage = req.file ? `/uploads/${req.file.filename}` : imageUrl;
+
+    // Create an update object dynamically based on what was sent
+    const updateData: Record<string, any> = {};
+    if (firstName) updateData.firstName = firstName;
+    if (lastName) updateData.lastName = lastName;
+    if (profileImage) updateData.profileImage = profileImage;
+
+    // Perform the update and return the freshly updated document (excluding password)
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: updateData },
+      { new: true, runValidators: true }
+    ).select('-password');
+
+    if (!updatedUser) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      data: updatedUser
+    });
+  } catch (error: any) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
