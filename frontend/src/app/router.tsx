@@ -1,7 +1,5 @@
 import { createBrowserRouter, Outlet } from "react-router-dom";
 
-import Home from "../pages/Home";
-
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 
@@ -14,6 +12,7 @@ import AdminBooks from "../pages/admin/Books";
 import AdminStudents from "../pages/admin/Students";
 import AdminBorrowings from "../pages/admin/Borrowings";
 import AdminAnalytics from "../pages/admin/Analytics";
+import EntryRedirect from "../pages/EntryRedirect";
 
 // import StudentDashboard from "../pages/student/dashboard";
 // import StudentBooks from "../pages/student/Books";
@@ -25,9 +24,8 @@ import AdminAnalytics from "../pages/admin/Analytics";
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <EntryRedirect />,
   },
-
   {
     element: <AuthLayout />,
     children: [
@@ -41,7 +39,6 @@ export const router = createBrowserRouter([
       },
     ],
   },
-
   {
     path: "/admin",
     element: <AdminLayout />,
