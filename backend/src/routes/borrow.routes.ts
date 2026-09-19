@@ -2,11 +2,14 @@ import { Router } from "express";
 import {
   borrowBook,
   returnBook,
+  getAllBorrowingsController,
 } from "../controllers/borrow.controller";
-import { verifyToken } from "../middleware/auth";
-import { requireAdmin } from "../middleware/auth";
+import { verifyToken, requireAdmin } from "../middleware/auth";
 
 const router = Router();
+
+router.get("/", verifyToken, requireAdmin, getAllBorrowingsController);
+
 
 /**
  * @swagger
